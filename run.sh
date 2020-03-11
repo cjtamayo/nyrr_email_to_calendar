@@ -8,3 +8,14 @@ for file in *.eml; do
 done
 
 echo complete with name change
+
+cd ..
+
+echo running script
+python3.7 worker.py
+
+echo deleting eml file
+cd email_loc
+rm nyrr_email.eml
+
+echo COMPLETE
