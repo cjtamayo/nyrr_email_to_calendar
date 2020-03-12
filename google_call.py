@@ -87,7 +87,8 @@ def event_creator(day, workout, distance, description):
     }
 
 
-    event = service.events().insert(calendarId='***REMOVED***', body=event).execute()
+    event = service.events().insert(calendarId=os.getenv('GOOGLE_CALENDAR_ID'), body=event).execute()
+    
 
     print('created event for {}'.format(day))
 
