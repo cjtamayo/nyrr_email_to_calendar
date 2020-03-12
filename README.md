@@ -21,11 +21,13 @@ export GOOGLE_CALENDAR_ID={calendar_id}
 Download the email and place the .eml file in the `email_loc` folder and simply run the shell script `./run.sh`. The 
 script will take the file, parse it, create events on your calendar, then delete the unneeded eml file.
 
-Example of email: 
+
+###Example of email: 
+
 ![blah](https://raw.githubusercontent.com/cjtamayo/nyrr_email_to_calendar/master/images/nyrr_email_screenshot0.png "original email")
 
 
-Google calendar events created from email:
+###Google calendar events created from email:
 ![alt text](https://raw.githubusercontent.com/cjtamayo/nyrr_email_to_calendar/master/images/nyrr_email_screenshot1.png "relevant calendar event")
 
 
