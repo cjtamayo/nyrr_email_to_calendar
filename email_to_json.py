@@ -8,6 +8,7 @@ def eml_to_html():
     Grabs .eml file (hard coded name from BASH script) and pulls the HTML body
     :return: HTML string
     """
+    print('pulling html from email')
     with open('email_loc/nyrr_email.eml', 'rb') as fhdl:
         raw_email = fhdl.read()
 
@@ -39,7 +40,7 @@ def body_to_lists(html):
     :param html:
     :return:
     """
-
+    print('organizing date details')
     soup = BeautifulSoup(html, 'html.parser')
 
     days = list()
