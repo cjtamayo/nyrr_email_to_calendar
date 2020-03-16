@@ -12,10 +12,12 @@ based off of it.
 This script uses `eml_parser`, `beautiful_soup`, `pickle` and google's calendar API, which can be found [HERE](https://developers.google.com/calendar).
 
 ### Environmantal Variables
-There is only one ENV VAR, and thats for the google calendar ID. This can simply be "primary" if you want it to be 
-placed in you main calendar. Otherwise, add it by inputting:
+There are 3 environmental variables, all of which are optional. They 
+can be added by inputting the following (defaults are noted):
 
-export GOOGLE_CALENDAR_ID={calendar_id}
+* export GOOGLE_CALENDAR_ID={[ID](https://developers.google.com/calendar/v3/reference/calendarList/get) default:"_primary_"} 
+* export CALENDAR_TIME_ZONE={[TZ](http://www.iana.org/time-zones) default: "_America/New_York_""}
+* export CALENDAR_LOCATION={Event's Location, default: "New York, NY 10019"}
 
 ### Instructions
 Download the email and place the .eml file in the `email_loc` folder and simply run the shell script `./run.sh`. The 

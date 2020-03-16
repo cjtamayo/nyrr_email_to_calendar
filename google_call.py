@@ -3,20 +3,19 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 import os
 import pickle
 from dateutil.parser import parse
-from datetime import datetime
 
 
-def authentication_store(need_auth = False):
+def authentication_store():
     """
     IF creds are needed, this will grab it and store it via pickle
     :param need_auth:
     :return:
     """
-    if need_auth:
-        scopes = ['https://www.googleapis.com/auth/calendar']
-        flow = InstalledAppFlow.from_client_secrets_file('client_secret.json', scopes=scopes)
-        credentials = flow.run_console()
-        pickle.dump(credentials, open("token.pkl", "wb"))
+    print("Getting authentication")
+    scopes = ['https://www.googleapis.com/auth/calendar']
+    flow = InstalledAppFlow.from_client_secrets_file('client_secret.json', scopes=scopes)
+    credentials = flow.run_local_server(port=0)
+    pickle.dump(credentials, open("token.pkl", "wb"))
 
     return
 
@@ -47,9 +46,15 @@ def event_creator(day, workout, distance, description):
     :param description:
     :return:
     """
-
+    print("Building {}".format(day))
     credentials = pickle.load(open("token.pkl", "rb"))
-    service = build("calendar", "v3", credentials=credentials)
+    try:
+        service = build("calendar", "v3", credentials=credentials)
+    except:
+        print("credentials error, trying re-authentication")
+        authentication_store()
+        credentials = pickle.load(open("token.pkl", "rb"))
+        service = build("calendar", "v3", credentials=credentials)
 
     date_event = parse(day)
 
@@ -67,27 +72,26 @@ def event_creator(day, workout, distance, description):
 
     event = {
       'summary': summary,
-      'location': 'New York, NY 10019',
+      'location': os.getenv('CALENDAR_LOCATION','New York, NY 10019'),
       'description': full_descrip,
       'start': {
         'date': date_event.strftime("%Y-%m-%d"),
-        'timeZone': 'America/New_York',
+        'timeZone': os.getenv('CALENDAR_TIME_ZONE','America/New_York'),
       },
       'end': {
         'date': date_event.strftime("%Y-%m-%d"),
-        'timeZone': 'America/New_York',
+        'timeZone': os.getenv('CALENDAR_TIME_ZONE','America/New_York'),
       },
       'reminders': {
         'useDefault': False,
         'overrides': [
             {'method': 'email', 'minutes': 60},
-            {'method': 'popup', 'minutes': 10},
         ],
       },
     }
 
 
-    event = service.events().insert(calendarId=os.getenv('GOOGLE_CALENDAR_ID'), body=event).execute()
+    event = service.events().insert(calendarId=os.getenv('GOOGLE_CALENDAR_ID', 'primary'), body=event).execute()
     
 
     print('created event for {}'.format(day))

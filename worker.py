@@ -6,6 +6,9 @@ def main():
     body_html = eml_to_html()
     res_dict = body_to_lists(body_html)
 
+    authenticate = False
+    if authenticate:
+        authentication_store()
     for key, val in res_dict.items():
         event_creator(key, val[0], val[1], val[2])
 
